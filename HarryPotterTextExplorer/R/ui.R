@@ -7,6 +7,16 @@ ui <- page_navbar(
   
   title = "Harry Potter Text Explorer",
   
+  ########
+  theme = bslib::bs_theme(
+    version = 5,
+    bg = "#F5E6C8",
+    fg = "#1a1a1a",
+    primary = "#7F0909",
+    base_font = bslib::font_google("Roboto"),
+    heading_font = bslib::font_google("Cinzel")
+  ),
+  
   nav_panel(
     
     "Home",
@@ -29,11 +39,17 @@ ui <- page_navbar(
       hr(),
       
       h4(" Команда проекта:"),
-      tags$ul(
-        tags$li("Лесниченко Михаил"),
-        tags$li("Тарасов Александр"),
-        tags$li("Широков Иван")
+      
+      
+      div(
+        "Лесниченко Михаил",
+        br(),
+        "Тарасов Александр",
+        br(),
+        "Широков Иван"
       ),
+      
+      
       
       br(),
       

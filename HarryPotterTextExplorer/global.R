@@ -22,8 +22,22 @@ tfidf_data <- calculate_tfidf(df)
 
 
 # моделька 
-model_df <- df |>
-  dplyr::select(text, book)
+# моделька
+
+# Объединяем маленькие фрагменты в более крупные тексты
+df_classifier <- df |>
+  group_by(book, chapter) |>
+  summarise(
+    text = paste(text, collapse = " "),
+    .groups = "drop"
+  )
+
+
+# балансируем количество примеров между книгами
+model_df <- df_classifier |>
+  group_by(book) |>
+  slice_sample(n = 200) |>
+  ungroup()
 
 set.seed(123)
 
@@ -34,10 +48,11 @@ test_data  <- testing(split)
 rec <- recipe(book ~ text, data = train_data) |>
   step_tokenize(text) |>
   step_stopwords(text) |>
+  step_tokenfilter(text, max_tokens = 8000) |>
   step_tfidf(text)
 
 model <- multinom_reg(
-  penalty = 0.01
+  penalty = 0.001
 ) |>
   set_engine("glmnet")
 
