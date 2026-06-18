@@ -1,0 +1,124 @@
+html {
+  min-height: 100%;
+  background:
+    linear-gradient(rgba(247, 241, 228, 0.64), rgba(247, 241, 228, 0.78)),
+    url("/data-assets/parchment.jpg") center / cover fixed;
+}
+
+body,
+body.bslib-page-navbar {
+  min-height: 100%;
+  background: transparent !important;
+  position: relative;
+}
+
+body.bslib-page-navbar::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(247, 241, 228, 0.64), rgba(247, 241, 228, 0.78)),
+    url("/data-assets/parchment.jpg") center / cover fixed;
+}
+
+.bslib-page-navbar > .container-fluid,
+.tab-content,
+.tab-pane,
+.bslib-sidebar-layout,
+.bslib-sidebar-layout > .main {
+  background: transparent !important;
+}
+
+.bslib-page-navbar > .container-fluid {
+  padding-top: 20px;
+}
+
+.home-hero {
+  min-height: 520px;
+  padding: 64px 48px;
+  border-radius: 8px;
+  color: #fff;
+  background:
+    linear-gradient(135deg, rgba(116, 0, 1, 0.78), rgba(26, 71, 42, 0.7)),
+    url("/data-assets/parchment.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.home-hero h1 {
+  max-width: 900px;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  line-height: 1;
+}
+
+.home-hero h3,
+.home-hero p {
+  max-width: 820px;
+}
+
+.home-description {
+  max-width: 860px;
+  display: grid;
+  gap: 8px;
+}
+
+.home-description p {
+  margin: 0;
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+
+.team-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: center;
+}
+
+.team-list span {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 6px;
+}
+
+.repo-link {
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 6px;
+  color: #fff;
+  background: #7f0909;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.repo-link:hover {
+  color: #fff;
+  background: #5f0707;
+}
+
+.card {
+  border-radius: 8px;
+  border-color: rgba(31, 31, 31, 0.12);
+  background-color: rgba(255, 250, 240, 0.94);
+}
+
+.sidebar-content {
+  background-color: rgba(255, 250, 240, 0.92);
+}
+
+.metric-note {
+  max-width: 820px;
+  color: #4f4a43;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+table {
+  font-size: 0.95rem;
+}
