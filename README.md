@@ -4,7 +4,7 @@
 
 ## Ссылка
 
-https://tarasovaleksandr.shinyapps.io/harry-potter-main/
+https://sn3ew5-mikhail-lesnichenko.shinyapps.io/Harry-Potter/
 
 ## Быстрый запуск
 
