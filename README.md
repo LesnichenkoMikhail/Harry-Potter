@@ -106,14 +106,14 @@ Rscript scripts/train_classifier.R
 │   ├── sentiment.R
 │   ├── server.R
 │   ├── tfidf.R
-│   └── ui.R
+│   ├── ui.R
+│   └── utils.R
 ├── scripts/
 │   └── train_classifier.R
 ├── data/
 │   ├── afinn_lexicon.rds
 │   ├── classifier_split_documents.csv
-│   ├── harry_potter_books.csv
-│   └── parchment.jpg
+│   └── harry_potter_books.csv
 ├── models/
 │   ├── classifier_fit.rds
 │   └── classifier_metrics.rds

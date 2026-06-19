@@ -1,18 +1,14 @@
-library(dplyr)
 library(glmnet)
 library(hardhat)
 library(parsnip)
-library(readr)
 library(recipes)
 library(rsample)
-library(stringr)
 library(textrecipes)
-library(tibble)
-library(tidyr)
 library(tune)
 library(workflows)
 library(yardstick)
 
+# Термины для ручных признаков: имена + ключевые слова книг
 classifier_terms <- c(
   "harry", "ron", "hermione", "dumbledore", "snape", "voldemort",
   "draco", "hagrid", "ginny", "mcgonagall", "sirius", "lupin",
@@ -22,6 +18,7 @@ classifier_terms <- c(
   "tournament", "crouch", "prophecy", "horcrux", "hallows"
 )
 
+# Очистка текста: только латиница, цифры, апострофы, дефисы
 clean_classifier_text <- function(text) {
   text |>
     str_replace_all("[^A-Za-z0-9'[:space:]-]", " ") |>
@@ -32,6 +29,7 @@ classifier_term_columns <- function() {
   paste0("term_", make.names(classifier_terms))
 }
 
+# Ручные признаки: длина текста, лексическое разнообразие, диалоги, частоты терминов
 add_classifier_features <- function(data) {
   text_lower <- str_to_lower(data$text)
   tokens <- str_extract_all(text_lower, "[a-z']+")
@@ -60,6 +58,7 @@ add_classifier_features <- function(data) {
   bind_cols(feature_data, term_features)
 }
 
+# Склейка чанков в документы по 100 штук
 prepare_classifier_documents <- function(df, chunks_per_doc = 100) {
   df |>
     mutate(text = clean_classifier_text(text)) |>
@@ -84,6 +83,7 @@ prepare_classifier_documents <- function(df, chunks_per_doc = 100) {
     add_classifier_features()
 }
 
+# Веса для балансировки классов (обратно пропорционально частоте книги)
 add_classifier_weights <- function(data) {
   class_counts <- data |>
     count(book, name = "class_n")
@@ -95,6 +95,7 @@ add_classifier_weights <- function(data) {
     select(-class_n)
 }
 
+# Стратифицированное разбиение: целые главы не перемешиваются между train/val/test
 split_classifier_documents <- function(docs,
                                        train_prop = 0.7,
                                        validation_prop = 0.1,
@@ -122,6 +123,7 @@ split_classifier_documents <- function(docs,
     relocate(split, .after = doc_key)
 }
 
+# Рецепт: TF-IDF токенов + ручные признаки
 build_classifier_recipe <- function(train_data, max_tokens = 3000, min_times = 3) {
   feature_cols <- c(
     "log_words",
@@ -141,6 +143,7 @@ build_classifier_recipe <- function(train_data, max_tokens = 3000, min_times = 3
     step_tfidf(text)
 }
 
+# Таблица метрик для одной выборки
 classifier_metric_table <- function(predictions, split) {
   probability_cols <- setdiff(
     names(predictions)[startsWith(names(predictions), ".pred_")],
@@ -159,6 +162,7 @@ classifier_metric_table <- function(predictions, split) {
     mutate(split = split, .before = 1)
 }
 
+# Полный пайплайн обучения с кросс-валидацией
 train_classifier_model <- function(df,
                                    chunks_per_doc = 100,
                                    seed = 2026,
@@ -170,7 +174,6 @@ train_classifier_model <- function(df,
   set.seed(seed)
 
   docs <- prepare_classifier_documents(df, chunks_per_doc)
-
   split_docs <- split_classifier_documents(docs, seed = seed)
 
   if (!is.null(split_output_path)) {
@@ -303,6 +306,7 @@ train_classifier_model <- function(df,
   list(model = final_fit, metrics = metrics)
 }
 
+# Загрузка сохранённой модели и метрик
 load_classifier_artifacts <- function(model_dir = "models") {
   list(
     model = readRDS(file.path(model_dir, "classifier_fit.rds")),
@@ -310,6 +314,7 @@ load_classifier_artifacts <- function(model_dir = "models") {
   )
 }
 
+# Предсказание книги по произвольному тексту
 predict_book <- function(model, text) {
   new_data <- tibble(text = clean_classifier_text(text))
   new_data <- add_classifier_features(new_data)

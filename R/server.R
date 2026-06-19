@@ -1,20 +1,6 @@
-red_gold_gradient <- function(x, low = "#d3a625", high = "#7f0909") {
-  if (length(x) == 0) {
-    return(character())
-  }
-
-  palette <- grDevices::colorRampPalette(c(low, "#b85c1e", high))(100)
-  value_range <- range(x, na.rm = TRUE)
-
-  if (!is.finite(value_range[1]) || value_range[1] == value_range[2]) {
-    return(rep(high, length(x)))
-  }
-
-  scaled <- scales::rescale(x, to = c(1, 100), from = value_range)
-  palette[pmax(1, pmin(100, round(scaled)))]
-}
-
 server <- function(input, output, session) {
+
+  # Тональность: динамика по главам с цветовой шкалой
   output$sent_plot <- renderPlotly({
     data <- sentiment_data |>
       filter(
@@ -50,6 +36,7 @@ server <- function(input, output, session) {
       )
   })
 
+  # Персонажи: частота упоминаний
   output$char_plot <- renderPlotly({
     data <- count_character_mentions(df, input$book_char) |>
       arrange(mentions) |>
@@ -72,6 +59,7 @@ server <- function(input, output, session) {
       )
   })
 
+  # TF-IDF: ключевые слова книги (столбцы или облако)
   output$tfidf_plot <- renderPlotly({
     data <- tfidf_data |>
       filter(book == input$book_tfidf) |>
@@ -80,6 +68,7 @@ server <- function(input, output, session) {
       mutate(word = factor(word, levels = word))
 
     if (input$tfidf_view == "cloud") {
+      # Облако слов: симуляция расположения через полярные координаты
       cloud_data <- data |>
         arrange(desc(tf_idf)) |>
         mutate(
@@ -134,14 +123,12 @@ server <- function(input, output, session) {
     }
   })
 
+  # Сеть: только по кнопке (тяжёлое вычисление)
   network_graph <- eventReactive(input$build_network_btn, {
-    req(input$book_network)
     build_network(df, input$book_network)
   })
 
   output$network_plot <- renderVisNetwork({
-    req(input$build_network_btn)
-
     graph <- network_graph()
     vis_data <- network_vis_data(graph, input$min_connection)
 
@@ -149,6 +136,7 @@ server <- function(input, output, session) {
       need(nrow(vis_data$edges) > 0, "Для этого порога связей не найдено.")
     )
 
+    # Суммарная сила связей для каждого узла
     node_strength <- vis_data$edges |>
       select(from, to, weight) |>
       tidyr::pivot_longer(c(from, to), values_to = "id") |>
@@ -178,6 +166,7 @@ server <- function(input, output, session) {
       visPhysics(stabilization = TRUE)
   })
 
+  # Классификатор: только по кнопке
   prediction <- eventReactive(input$predict_btn, {
     req(str_squish(input$input_text) != "")
     predict_book(classifier_fit, input$input_text)

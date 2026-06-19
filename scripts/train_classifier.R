@@ -1,4 +1,11 @@
+# Скрипт переобучения модели классификатора
+# Запускать из корня репозитория: Rscript scripts/train_classifier.R
+
+library(dplyr)
 library(readr)
+library(stringr)
+library(tibble)
+library(tidyr)
 
 source("R/classifier.R")
 

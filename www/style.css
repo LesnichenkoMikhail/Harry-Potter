@@ -2,7 +2,7 @@ html {
   min-height: 100%;
   background:
     linear-gradient(rgba(247, 241, 228, 0.64), rgba(247, 241, 228, 0.78)),
-    url("/data-assets/parchment.jpg") center / cover fixed;
+    url("parchment.jpg") center / cover fixed;
 }
 
 body,
@@ -20,7 +20,7 @@ body.bslib-page-navbar::before {
   pointer-events: none;
   background:
     linear-gradient(rgba(247, 241, 228, 0.64), rgba(247, 241, 228, 0.78)),
-    url("/data-assets/parchment.jpg") center / cover fixed;
+    url("parchment.jpg") center / cover fixed;
 }
 
 .bslib-page-navbar > .container-fluid,
@@ -42,7 +42,7 @@ body.bslib-page-navbar::before {
   color: #fff;
   background:
     linear-gradient(135deg, rgba(116, 0, 1, 0.78), rgba(26, 71, 42, 0.7)),
-    url("/data-assets/parchment.jpg");
+    url("parchment.jpg");
   background-size: cover;
   background-position: center;
   display: flex;

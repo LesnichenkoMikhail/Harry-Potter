@@ -1,9 +1,4 @@
-library(dplyr)
-library(readr)
-library(stringr)
-library(tidyr)
-library(tidytext)
-
+# Загрузка лексикона тональности (Bing или AFINN)
 sentiment_lexicon_scores <- function(lexicon) {
   if (lexicon == "afinn") {
     readRDS("data/afinn_lexicon.rds") |>
@@ -17,6 +12,7 @@ sentiment_lexicon_scores <- function(lexicon) {
   }
 }
 
+# Оценка тональности с нормировкой на 1000 слов
 calculate_sentiment <- function(df, lexicon = "bing") {
   tokens <- df |>
     mutate(chapter_num = as.integer(str_extract(chapter, "\\d+"))) |>
@@ -55,6 +51,7 @@ calculate_sentiment <- function(df, lexicon = "bing") {
     arrange(book, chapter_num)
 }
 
+# Расчёт тональности по всем лексиконам сразу
 calculate_all_sentiments <- function(df, lexicons = c("bing", "afinn")) {
   bind_rows(lapply(lexicons, calculate_sentiment, df = df))
 }

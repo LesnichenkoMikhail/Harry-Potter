@@ -4,13 +4,7 @@ library(plotly)
 library(readr)
 library(visNetwork)
 
-addResourcePath("data-assets", normalizePath("data", mustWork = TRUE))
-
-book_choices <- if (exists("df", inherits = TRUE) && is.data.frame(get("df", inherits = TRUE))) {
-  unique(get("df", inherits = TRUE)$book)
-} else {
-  unique(read_csv("data/harry_potter_books.csv", show_col_types = FALSE)$book)
-}
+book_choices <- unique(read_csv("data/harry_potter_books.csv", show_col_types = FALSE)$book)
 
 ui <- page_navbar(
   title = "Гарри Поттер: анализ текстов",

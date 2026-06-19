@@ -1,7 +1,4 @@
-library(dplyr)
-library(tidyr)
-library(stringr)
-
+# Основные персонажи для поиска в тексте
 hp_characters <- tibble(
   character = c(
     "Harry", "Ron", "Hermione", "Dumbledore", "Snape",
@@ -10,6 +7,7 @@ hp_characters <- tibble(
   pattern = paste0("\\b", character, "\\b")
 )
 
+# Поиск имён персонажей в строке
 find_characters <- function(text) {
   hp_characters$character[str_detect(
     text,
@@ -17,6 +15,7 @@ find_characters <- function(text) {
   )]
 }
 
+# Частота упоминаний каждого персонажа в книге
 count_character_mentions <- function(df, selected_book) {
   text <- df |>
     filter(book == selected_book) |>
@@ -31,6 +30,7 @@ count_character_mentions <- function(df, selected_book) {
     arrange(desc(mentions))
 }
 
+# Граф совместных упоминаний: ребро = два персонажа в одном чанке
 build_network <- function(df, selected_book) {
   data <- df |>
     filter(book == selected_book)
@@ -55,6 +55,7 @@ build_network <- function(df, selected_book) {
   )
 }
 
+# Фильтрация рёбер по минимальному весу и подготовка данных для visNetwork
 network_vis_data <- function(graph, min_weight) {
   edges <- igraph::as_data_frame(graph, what = "edges") |>
     filter(weight >= min_weight)
