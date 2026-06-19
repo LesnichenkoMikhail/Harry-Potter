@@ -10,6 +10,7 @@ library(tibble)
 library(tidyr)
 library(tidytext)
 library(visNetwork)
+library(stopwords)
 
 # Исходные данные
 df <- read_csv("data/harry_potter_books.csv", show_col_types = FALSE)
