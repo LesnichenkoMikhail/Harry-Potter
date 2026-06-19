@@ -1,4 +1,4 @@
-# Точка входа: инициализация и запуск приложения
+# точка входа
 source("global.R")
 source("R/ui.R")
 source("R/server.R")

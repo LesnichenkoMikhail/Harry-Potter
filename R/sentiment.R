@@ -1,4 +1,4 @@
-# Загрузка лексикона тональности (Bing или AFINN)
+# грузим лексиконы тональности
 sentiment_lexicon_scores <- function(lexicon) {
   if (lexicon == "afinn") {
     readRDS("data/afinn_lexicon.rds") |>
@@ -51,7 +51,7 @@ calculate_sentiment <- function(df, lexicon = "bing") {
     arrange(book, chapter_num)
 }
 
-# Расчёт тональности по всем лексиконам сразу
+# считаем тональность по всем лексиконам
 calculate_all_sentiments <- function(df, lexicons = c("bing", "afinn")) {
   bind_rows(lapply(lexicons, calculate_sentiment, df = df))
 }

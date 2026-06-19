@@ -1,6 +1,6 @@
 server <- function(input, output, session) {
 
-  # Тональность: динамика по главам с цветовой шкалой
+  # динамика тональности по главам с цветовой шкалой
   output$sent_plot <- renderPlotly({
     data <- sentiment_data |>
       filter(
@@ -36,7 +36,7 @@ server <- function(input, output, session) {
       )
   })
 
-  # Персонажи: частота упоминаний
+  # частота упоминаний персонажей
   output$char_plot <- renderPlotly({
     data <- count_character_mentions(df, input$book_char) |>
       arrange(mentions) |>
@@ -59,7 +59,7 @@ server <- function(input, output, session) {
       )
   })
 
-  # TF-IDF: ключевые слова книги (столбцы или облако)
+  # ключевые слова книги (столбцы или облако)
   output$tfidf_plot <- renderPlotly({
     data <- tfidf_data |>
       filter(book == input$book_tfidf) |>
@@ -123,7 +123,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Сеть: только по кнопке (тяжёлое вычисление)
+  # сеть по кнопке
   network_graph <- eventReactive(input$build_network_btn, {
     build_network(df, input$book_network)
   })
@@ -136,7 +136,7 @@ server <- function(input, output, session) {
       need(nrow(vis_data$edges) > 0, "Для этого порога связей не найдено.")
     )
 
-    # Суммарная сила связей для каждого узла
+    # сумма силы связей для каждого узла
     node_strength <- vis_data$edges |>
       select(from, to, weight) |>
       tidyr::pivot_longer(c(from, to), values_to = "id") |>
@@ -166,7 +166,7 @@ server <- function(input, output, session) {
       visPhysics(stabilization = TRUE)
   })
 
-  # Классификатор: только по кнопке
+  # классификатор по кнопкее
   prediction <- eventReactive(input$predict_btn, {
     req(str_squish(input$input_text) != "")
     predict_book(classifier_fit, input$input_text)

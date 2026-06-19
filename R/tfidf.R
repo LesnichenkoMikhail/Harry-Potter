@@ -1,4 +1,4 @@
-# Слова-имена и титулы — исключаются из TF-IDF, чтобы не забивать топ
+# дропаем именованные сущности, забивают топ тфидф
 tfidf_excluded_words <- c(
   "harry", "potter", "ron", "ronald", "hermione", "dumbledore",
   "snape", "voldemort", "draco", "hagrid", "ginny", "mcgonagall",
@@ -19,7 +19,7 @@ tfidf_excluded_words <- c(
   "scabbers", "yaxley", "mom", "quot"
 )
 
-# TF-IDF по книгам для выделения характерных слов
+# расчёт вектора
 calculate_tfidf <- function(df) {
   tfidf <- df |>
     unnest_tokens(word, text) |>

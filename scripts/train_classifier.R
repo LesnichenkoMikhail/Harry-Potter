@@ -1,5 +1,5 @@
-# Скрипт переобучения модели классификатора
-# Запускать из корня репозитория: Rscript scripts/train_classifier.R
+# можно вызвать для того чтобы переобучить модель
+# запускать из корня репо: Rscript scripts/train_classifier.R
 
 library(dplyr)
 library(readr)
